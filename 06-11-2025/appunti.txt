@@ -1,0 +1,16 @@
+Esmpio di calcolo maschera di rete e sottorete: 
+- Supponiamo di voler dividere la rete B 130.136.x.y in 8 sottoreti
+	Quanti host potrà contenere al max ogni sottorete?
+		8 sottoreti->3bit(perché 2^3=8) e quindi restano 16-3=13 bit per il numero di host, quindi in totale ci sono 2^13=8192 host per sottorete
+	Come definisco la maschera di rete?
+		Sarà sicuramente 255.255 all'inizio, poi dato che voglio 8 sottoreti(2^3) mi servono tre bit di estensione: 11111111.11111111.11100000.00000000
+		dunque sarà 255.255.224.0 o anche, in CIDR notation, /19. 
+		Il 255.255 iniziale è ovvio perche essendo a rete di classe B, i primi 2 byte di rete devo mantenerli.
+		Nota: se volessimo ad esempio fare 9 sottoreti dovremmo prendere 4 bit in prestito ai byte di host perché 2^3<9<2^4.
+	Prendiamo ora un host a caso della rete di classe B: 130.136.169.4. A quale rete e sottorete questo host appartiene?
+		Facciamo l'and binario fra 130.136.169.4 e la maschera 255.255.224.0 che viene 10000010.10001000.10101001.00000100. 
+		Guardiamo i primi tre bit del terzo byte: 101 che in decimale è 5 quindi l'host appartiene alla sottorete 5 e il suo numero host è la traduzione
+		degli ultimi due byte di 10000010.10001000.10101001.00000100 ossia 169.4.
+Ma a cosa serve la maschera di rete?
+	Serve al router della rete a cui si appartiene per capire se il messaggio è da inoltrare al di fuori della propria rete o se il destinatario
+	appartiene alla sua stessa rete.	
