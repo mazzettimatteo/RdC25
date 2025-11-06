@@ -1,5 +1,5 @@
 Esmpio di calcolo maschera di rete e sottorete: 
-- Supponiamo di voler dividere la rete B 130.136.x.y in 8 sottoreti
+-Supponiamo di voler dividere la rete B 130.136.x.y in 8 sottoreti
 	Quanti host potrà contenere al max ogni sottorete?
 		8 sottoreti->3bit(perché 2^3=8) e quindi restano 16-3=13 bit per il numero di host, quindi in totale ci sono 2^13=8192 host per sottorete
 	Come definisco la maschera di rete?
@@ -13,4 +13,17 @@ Esmpio di calcolo maschera di rete e sottorete:
 		degli ultimi due byte di 10000010.10001000.10101001.00000100 ossia 169.4.
 Ma a cosa serve la maschera di rete?
 	Serve al router della rete a cui si appartiene per capire se il messaggio è da inoltrare al di fuori della propria rete o se il destinatario
-	appartiene alla sua stessa rete.	
+	appartiene alla sua stessa rete.
+-Da host mittente 130.136.169.4 a host destinazione 130.136.160.11.
+	Controlliamo che mittete e destinatario facciano parte della stess sottorete o meno:
+		L'host mittente è quello di prima e, grazie alla maschera di rete, abbaimo capito che è l'host 169.4 della sottorete 5 e se consideriamo l'IPv4
+		del destinatario: 130.136.160.11 è 10000010.10001000.101000000.00001011 che anche lui appartiene alla sottorete 101 ossia la 5.
+		Quindi l'host destinazione è sulla stessa rete IP locale.
+	Guardiamo ora cosa succede se la maschera di rete fosse stata diversa: invece che /19 sia /21, quindi se al posto di 8 sottorete ce ne siano 32:
+		La nuova maschera di rete è 255.255.248.0. L'host mittente adesso sta dentro alla sottorete 21, i primi 5 bit sec secondo byte sono 10101. 
+		Ma il destinatario appartiene alla sottorete 20. Il router del destinatario nota che l'indirizzo di destinazione è diveso da quello del mittente
+		e quindi, al posto di mantenetre il pacchetto nella stessa rete, lo invia all'esterno al default router che lo indirizzerà alla sottorete esatta
+	Le informazioni necessarie per connettere una scheda di rete ad internet saranno quindi tre: indirizzo IP, maschera di rete e default router.
+	Esistono altre informazioni utili(non necessarie però) come il DNS(domain name system). 
+
+
