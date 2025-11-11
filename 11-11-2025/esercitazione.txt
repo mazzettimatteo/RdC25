@@ -1,0 +1,41 @@
+ESERCITAZIONE 11/10/2025 (guarda anche doc con soluzione prof)
+Progettare rete IP con le seguenti caratteristiche:
+-segmento LAN IP1:48 host(di cui uno è in router)
+-segmento LAN IP2:260 host a sua volta diviso in 2 LAN da 120 e 140(quindi due router)
+-segmento LAN IP3:4 host(di cui uno è in router)
+-indirizzi a disposizione: rete di claasse B 130.136/16 (ovvero 10000010.10001000)
+Svolgimento:
+Notiamo sucito che 130.136.255.255 è l'indirizzo di broadcast di tutta la rete totale.
+Scegliamo, seguendo la convenzione, che il router di tutta la rete ha indirizzo 130.136.255.254.
+Line guida da seguire: a) non sprecare inutilmente indirizzi IPv4; b)poter allocare il numero minimo di host richiesti dai requisiti, lascianto eventualmente un piccolo margine per la crescita della subnet oltre ai requisiti iniziali(elasticità).
+per IP1
+	servono 48 host che non è una potenza di due ma è maggiorato da 64=2^6.
+per IP2 dividiamo in IP2A e IP2B dove IP2A
+	per IP2A da 120 dobbiamo prendere 128=2^7 indirizzi
+	per IP2B da 140 dobbiamo prendere 256=2^8 indirizzi
+per IP3
+	servono 4 host, ricordiamoci che anche se 4 è una potenza del 2 se prendessimo 4=2^2 non avremmo spazio l'indirizzo per router e broadcast
+	prendiamo quindi 2^3=8 indirizzi
+Bisogna quindi maaggiorare alla prossima potenza di 2 il numero di host richiesti, a costo di perdere degli spazi indirizzi,
+perché altrimenti i requisiti richiesti non vengono incontrati.
+1) Iniziamo dal blocco più grande(IP2 che è quello con più host totali) che essendo diviso in A e B ci permette di iniziare dalla B che è più grande.
+	La maschera di rete della B sarà 11111111.11111111.11111111.00000000=/24, avendo aggiunto 8 bit ai primi due byte composti da 1.
+	Dato che IP2B va da 130.136.0.0 a 130.136.0.255 posso segliere dove piazzare la subnet: la metto in 130.136.00000000 o in 130.136.00000001 o in 
+	130.136.00000010 o ... 130.136.11111111. Scelgo di metterla in 130.136.000000000.00000000/24
+	La rete IP2B si esprieme ora con 130.136.0.0/24 con Netmask=255.255.255.0, primo host indirizzabile=130.136.0.1, 
+	ultimo host indirizzabile=130.136.0.253, indirizzo router=130.136.0.254, broadcast=130.136.0.255 
+	Il numero di host totali liberi che la B può avere sarà 254-140=114 perché solo 8 bit non sono coperti dalla maschera di rete(256)
+	e poi rimuovo l'indirizzo broadcast 130.135.0.255/24 e quello composto da 00000000 nel byte finale(che si riferisce alla alla rete corrente) 
+	quindi 256-1-1 e poi tolgo i 140 host richiesti:256-1-1-140.
+	Per la A ci bastano 7 bit quindi la maschera di rete sarà /25=11111111.11111111.11111111.10000000=255.255.255.128.
+	La rete sarà quindi definita da 130.136.1.0/25 che come spazio degli indirizzi va da 130.136.00000001.00000000 a 130.136.00000001.01111111 così
+	è adiacente alla rete B definita prima. L'indirizzo broadcast è quindi 130.136.00000001.01111111 e quello router è 130.136.00000001.01111110
+	e gli host liberi sono 128-2-120=6. Primo host indirizzabile:130.136.00000001.00000001 e l'ultimo è 130.136.00000001.011111110
+	Progrettiamo ora IP2 che contiene IP2A e IP2B: per 260 host ci serve un blocco da 9 bit=512 indirizzi che deve contenere A e B,
+	quindi non comincia dop IP2A ma inizia dove iniziava IP2B. La netmask sarà quindi 255.255.254.0=/23 e la rete va dall'indirizzo 130.136.0.0 a
+	130.136.1.255. Per IP2 il primo host indirizzabile è 130.136.0.1 e l'ultimo indirizzabile è 130.136.1.253 che è seguito dal indirizzo del router.
+2) Passiamo alla sottorete IP1(48 host compreso il router) chè è la più grande delle rimanenti. Pariamo da 130.136.00000010.0=130.136.2.0 e dato che		servono 6 bit per i 64 host la netmask sarà: /26=255.255.255.192. Gli indirizzi assumiblili da una macchina soono 64-2 da 130.136.2.1 a
+	130.136.2.61. Dove il router sarà 130.136.2.62 e il broadcast sarà 130.136.2.63.
+3) per IP3 non bastano 2 bit perchè poi non ci sarebbe spazio per l'indirizzo broadcast, ci servono quindi 3 bit: la netmask sarà /29 dove la rete è
+	definita da 130.136.2.64/29 con broadcast address=130.136.130.136.2.71 e router address=130.136.2.70. Lo spazio di indirizzamento è 8-2 host. 
+	Segue che dall'indirizzo 130.136.2.72 a 130.136.255.255 sono tutti indirizzi liberi da sottorete.
