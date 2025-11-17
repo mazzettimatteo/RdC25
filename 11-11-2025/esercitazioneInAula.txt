@@ -1,4 +1,5 @@
 ESERCITAZIONE 11/10/2025 (guarda anche doc con soluzione prof)
+ES 1)
 Progettare rete IP con le seguenti caratteristiche:
 -segmento LAN IP1:48 host(di cui uno è in router)
 -segmento LAN IP2:260 host a sua volta diviso in 2 LAN da 120 e 140(quindi due router)
@@ -39,3 +40,43 @@ perché altrimenti i requisiti richiesti non vengono incontrati.
 3) per IP3 non bastano 2 bit perchè poi non ci sarebbe spazio per l'indirizzo broadcast, ci servono quindi 3 bit: la netmask sarà /29 dove la rete è
 	definita da 130.136.2.64/29 con broadcast address=130.136.130.136.2.71 e router address=130.136.2.70. Lo spazio di indirizzamento è 8-2 host. 
 	Segue che dall'indirizzo 130.136.2.72 a 130.136.255.255 sono tutti indirizzi liberi da sottorete.
+
+ES 2)
+-Qual è l'indirizzo di rete che contiene l'host 87.11.22.14/17?
+87 quindi classe A
+87.11.00010110.14
+Netmask: 255.255.128.0=/17
+quindi 87.14.0xxxxxxx.xxxxxxxx
+rete 87 di classe A
+sottorete 87.11.0.0/17
+-E qual è il router che contiene l'host suddetto?
+il router è l'ultimo valore prima del broadcast
+broadcast=87.11.01111111.255
+quindi router=27.11.01111111.254
+
+ES 3)
+-E' possibile fare supernetting delle due reti 200.100.50.0/24 e 201.100.50.0/24 ?
+Fare supernetting vuol dire unire più reti in un unica rete associando i due default router a un default router più in alto
+Le due reti sono di classe C:
+200.100.50.00000000/24
+			  11111111/24
+201.100.50.00000000/24
+			  11111111/24
+Dato che la differenza è solo nel primo byte: 200 e 201: 
+200=1100100 	0 x.y.z(/7)
+201=1100100		1 x.y.z(/7)
+la rete 1100100/7 che contiene 2^25 host.
+Non possiamo fare supernetting. Potremmo farlo se avessimo 200.100.50.0/24 e 200.100.51.0/24
+allora abbiamo:
+200.100.00110010.xxxxxxxx
+200.100.00110011.yyyyyyyy
+Notiamo che nel terzo byte posso staccare l'ultimo bit e attaccarlo all'ultimo byte
+200.100.0011001	0.xxxxxxxx/23
+200.100.0011001	1.yyyyyyyy/23
+ndi possi fonderle dandole come maschera di rete un /23
+l'indirizzo ip del router sarà 200.100.51.254/23 che è il router della super-rete
+
+ES 4)
+-Dato 177.217.33.29/18 che host è? chi è il suo router?
+177.217 è classe B
+177.217.001 continua

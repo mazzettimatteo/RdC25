@@ -1,0 +1,24 @@
+Esercitazione a casa
+
+Data la rete N con indirizzo ip:199.201.17.0/24 creare delle sottoreti tali che:
+- N1 rete da 64 host suddivisa in N1A(6 host) e N1B(15 host) 
+- N2 rete da 119 host composta da una sottorete N2A da 42 host
+determinare inoltre Network/subnetwork, netmask, first host, last host, router, router's default router, broadcast address
+
+Svolgimento:
+La rete N è una rete di classe C, infatti 199.201.17=11000111.11001001.00010001
+
+Partiamo da N2A che è la sottorete più grande: 42 host compreso il router, 42 è maggiorato da 64=2^6
+quindi la maschera di bit(se devo lasciare 6 bit liberi in fondo) sarà 11111111.11111111.11111111.11=/26
+dove il primo host indirizzabile è 199.201.17.1(perché network address è 199.201.17.0/26) e l'ultimo, prima di router(199.201.17.62)
+e broadcast(199.201.17.63) è 199.201.17.61.
+Capiamo ora come è costruita N2 che deve comprendere N2A: anche N2 inizia da 199.201.17.0 ma dato che deve contenere 119 host(<128=2^7) questa sarà un/25. L'indirizzo broadcast quindi è 199.201.17.127, quello del router è 199.201.17.126 e quindi l'ultimo indirizzabile è 199.201.17.125.
+Passiamo ora alla rete N1 che contiene N1A e N1B(più grande)
+Per N1B che deve contenere almeno 15 host non basta 2^4=16 ma devo prendere 5 bit(2^5=32) quindi la netmask sarà /27 (perchè 32-5).
+N1B non può però iniziare da 199.201.17.0 perchè altrimenti apparterrebbe a N2. Facciamola iniziare al primo blocco libero dopo N2: 199.201.17.128/27 sarà quindi l'indirizzo della rete. Avendo 5 bit per questa rete l'indirizzo ultimo(quello broadcast) sarà 199.201.17.159, segue che il router avrà
+l'indirizzo 199.201.17.158. Il primo addr. indirizzabile è 199.201.17.129 e l'ultimo è 199.201.17.157.
+N1A invece è composta da soli 6 host, quindi 3bit(2^3=8) vanno bene: netmask=/29. Segue che l'indirizzo di rete è 199.201.17.160/29, il primo addr.
+è 199.201.17.161, il broadcast è 199.201.17.167, quindi il router 199.201.17.166 e l'ultimo indirizzabile è 199.201.17.165. Dato che il router è compreso ci stanno esattamente 6 host. 
+La rete N1 che comprende N1A e N1B che contiene 64 host è maggiorata da 2^7=128 ha netmask /25 ed è la 199.201.17.128/25 con l'indirizzo broadcast in
+199.201.17.255, router in 199.201.17.254 con indirizzi disponibili da 199.201.17.129 a 199.201.17.253. 
+La rete N(partent network) è una rete di classe C con netmask=/24 quindi ha default router in 199.201.17.254/24, indirizzi da 199.201.17.0 a 199.201.17.253, perche poi seguiti da router e broadcast di N: 199.255.17.255.
