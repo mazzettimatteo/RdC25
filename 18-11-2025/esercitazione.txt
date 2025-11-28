@@ -1,0 +1,32 @@
+Esercitazione in aula su instradamento: DA COMPLETARE CON FILE SU VIRTUALE
+
+Il pacchetto ha mittenet 140.217.2.10 e giunge al router di default della sottorete nel quale è generato.
+Il router di default è 140.217.2.254.
+Come fa il router a capire che il pachhetto proviene dalla sua sottorete?
+
+140.217.2  .254 addr. del router
+255.255.255.0   netmask del router
+----AND---------
+140.217.2.0
+
+Prendiamo l'addr. del mittente 140.217.2  .10 
+										 255.255.255.0
+										------AND-------
+Uguale all'AND precedente -->	 140.217.2.0 
+.....
+
+
+130.136.2  .33 addr. del destinatario
+255.255.255.0   netmask del router
+----AND---------
+130.136.2.0(confrontando i due add. vediamo che sono diversi)
+
+140.217.2.0 è diverso da ... QUINDI il router comprende che è un pacchetto originato dall'interno e comprende che il
+pacchetto va mandato all'esterno. Quindi il router manda il pacchetto al suo default gateway 140.217.0.254
+
+il gaeway vede il pacchetto e si fa le stesse domande: il mittente appartiene alla stessa sottorete
+
+
+
+
+

@@ -1,0 +1,31 @@
+GESTIONE SLIDING WINDOW TCP CONTRO LA CONGESTIONE DELLA RETE 
+Idea: invio un pacchetto, se ricevo l'ACK ne mando due di fila, se mi tornano i due ACK ne mando quattro e così via.
+Se vedo a un certo punto che non mi tornano gli ACK ricomincio: invio un pacchetto, poi due, ecc.. 
+Non dimezzo solo la velocità ma azzero proprio perchè mentre io mi sono reso conto che il router è congestionato un altro client potrebbe stare accelerando l'invio(i client non sono coordinati) e così tante sorgenti asincrone sommate mediamentelasciano il router proprio al limite.  
+
+#	-fase di slow start(N*=2)
+##
+####
+#########
+################
+################################
+###############################################O################	-perdo ACK (O) quando la finestra è di 64
+#
+##
+####
+#########
+##################
+####################################	-32, fase prima di perdita dell'ACK
+#####################################	-a metà della soglia critica avanzo più lentamente(incremento di 1, non raddoppio)
+######################################	-fase di congestion avoidance(N++)
+#######################################
+########################################
+#########################################
+
+CONTROLLO DI FLUSSO
+Se il buffer di ricezione del ricevente ha questa dimensione:
+[xxxxxxxxxxxxxxxx########xxxxxxxx]
+Il controllo di flusso pone un limite massiomo alla finestra di congestione TCP tale che la Sliding Window SW non sia mai maggiore del buffer di ricezione RB. SW<=RB
+Semplicemente modificando la dim. di SW raggiungo il compromesso funzionale tra accelerare quanto serve e evitare la congestione sui router.
+
+Inoltre TCP (a differenza di UDP)
