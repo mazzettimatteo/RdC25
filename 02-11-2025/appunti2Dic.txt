@@ -1,0 +1,22 @@
+Il funzionamento della sliding window è questo: ...(APPUNTI LUCA)
+...
+In genere è il server che è il collo di bttiglia, non la rete.
+
+NOMI DI DOMINIO E DNS
+Gli utenti preferiscono usare nomi anziché indirizzi IP per le risorse in rete ma i protocolli di rete e i router necessitano di indirizzi IP e non di nomi.I nomi di dominio per le reti sono mnemonici con struttura gerarchica.EG eva.cs.unibo.it
+Esiste una rete di server detti DNS che sanno fare la traduzione da nome a IP. DNS=Domanin Name Server
+Questa rete è organizzata in modo gerarchico e ogni host della rete deve conoscere almeno un DNS server e ogni DNS server conosce un DNS server di livello superiore. 
+I server ricevono richieste con protocollo DNS e forniscono indirizzi IP attraverso pacchetti di livello trasposrto UDP. Se un server non conosce la risposta allora inoltra la richiesta ad un DNS superiore. I server DNS radice conoscono tutti i domini e i loro IP ma questi DNS root server sono pochi e molto costosi. In realtà essi non conosconoo tutti gli IP del mondo ma conosce solo i domini generali( .it, .org, .gov, ecc..) e poi passa la richiesta al DNS figlio corrispondente al dominio. 
+Spesso nelle realtà locali la macchina che fa da router è anche quella che fa da DNS server ma ciò è sbagliato perché si rallenta così il router che ha un solo obiettivo: andare veloce.
+In genere i DNS funzionano in maniera iterativa, non ricorsiva: se un DNS server non sa' la risposta ti dice a quale altro DNS chiedere la risposta, così scarica il carico di lavoro sul client. La modalità ricorsiva vorrebbe invece che fosse il DNS a fare una richiesta al DNS superiore se non consoce la risposta e così via: questo metodo è chiaramente molto pesante per il server. 
+Con gli indirizzi dinamici il fenomeno DNS è possibile solo per piccole reti locali dove è semplice aggiornare i DNS ogni volta che l'IP cambia. Se volessi collegarmi ad un indirizzo dinamico dall'altra parte del mondo non potrei perché è impossibile aggiornare tutte le tabelle DNS del mondo.
+
+
+LIVELLO APPLICAZIONE
+E' composto da primitive e protocolli per spedire e ricevere dati dalle applicazioni.
+I livelli Sessione e Presentazione sono raramente implementati negli host di Internet. Il livello applicazione si appoggia infatti sul livello trasporto (TCP in particlare)
+Esempi di applicazioni di rete e servizi del l. applicazione: 
+- Posta Elettronica: basati su protocolli livello applicazione SMTP, POP3, IMAP.
+- World Wide Web: basato su applicazione e protocollo HTTP(Hyper Text Transfer Protocol) per trasferire pagine web.
+- DNS: Domain Name Service con protocollo DNS
+DISEGNO MAILER LUCA
