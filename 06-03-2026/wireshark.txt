@@ -1,0 +1,52 @@
+LEZIONE 6 Mar 2026
+
+PACKET SNIFFER
+L'idea è di intercettare il traffico della rete locale per crcare informazioni nei pacchetti di rete. In genere si utilizza per motivi di diagnosi:
+- perché la rete è lenta
+- per individuare delle intrusioni
+Uno sniffer di rete guarda solo il livello rete: in genere si utilizza la promiscuous mode, quindi qualsiasi pacchetto passa da me, anche se non è indirizzato a me, lo memorizzo. Ciò funziona perché un pacco da A a B non segue una strada diretta, ma passa anche da altri host C, D, E, ... che possono star sniffando(monitorando il traffico di rete) o meno. Al giorno d'oggi però le comunicazioni sono unicast (solo fra A e B senza passare da altri) cifrate per gli altri.
+Wireshark funge da packet analyzer così da rendere chiaro il contenuto dei pacchetti di livello rete.
+
+Dato che le connessioni sono Unicast, come possiamo fare sniffing?
+
+1) Scelgo di fare sniffing solo all'interno di una macchina che ho "catturatto", è facile ma non posso monitorare il resto del traffico;
+2) Assumendo che l'attaccante ha accesso fisico alle infrastrutture di rete allora può inserire un hub (solo broadcast) e collegare ad esso il suo portatile con Wireshark. *Questo metodo diminuirà la performance della rete se si sta usando EthernetFullDuplex mode;
+3) Alcuni switch hanno una "monitoring mode" che ti permette di sniffare tutto il traffico da lì. Questo caso non è un caso di aattacco ma bensì di monitoraggio da parte dell'amministratore di rete;
+4) Un ulteriore modo per attaccare è facendo man-in-the-middle fra uno switch e un host. Questo metodo generà delay nelle comunicazioni;
+5) Alternativamente si può utilizzare un network TAP fra switch e host a cui un utente terzo può collegarsi e mettersi in ascolto/sniffing.
+Fra i metodi più malevoli abbiamo:
+1) man-in-the-middle con ARP Poisoning, si ingannano i due host che comunicano che tu sia il corrispondente. Questo chiaramente genera packet-loss. Questo metodo richiede un software apposta;
+2) Gli switch hanno una tabella per memorizzare gli indirizzi MAC associati alle varie porte. Allora possiamo bombardare lo switch con tanti indirizzzi fake, così che quando lo switch è saturo esso inizi a lavorare cme hub (broadcast only);
+3) In ambienti wireless è possibile sniffare un token di sessione e quindi sostituirsi alla macchina che si voleva connettere al dominio.
+
+WIRESHARK
+
+E' un network analyzer che utilizzeremo per:
+- catturare pacchetti live e visualizzare i dati all'interno
+- imposrare traccie? network e memorizzarle
+- filtrare e fare ricerche tra i pacchetti
+- creare statistiche sulla rete
+
+
+RISPOSTE AGLI ESERCIZI
+
+esercizio 0:
+1) Protocolli dello stack: IPv4, HTTP, TCP
+2) La risposta OK al GET è arrivata alle 09:59:16 GMT, time since request: 0.138s
+3) GAIA: 128.119.245.12 myADDR: 10.201.43.37
+4) Memorizzato nel file es0.4wireshark.pdf nella stessa directory di questo file 
+
+
+
+esercizio 1:
+1) la prima risposta(prima di fare l'accesso) è 401 UNAUTHORIZED
+2) Una volta autorizzato vediamo che lo schema è: Basic d2lyZXNoYXJrLXN0dWRlbnRzOm5ldHdvcms= che decriptato da base64 è wireshark-students:network+
+
+
+esercizio 2:
+usiamo $ping -c 10 www.ust.hk per fare 10 ping al sito di hongkong dopo esserci messi in ascolto
+usiamo traceroue: $sudo traceroute --icmp www.inria.fr
+filtriamo in ciascun caso con " icmp "
+
+
+
